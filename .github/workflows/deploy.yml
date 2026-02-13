@@ -13,9 +13,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install lftp
-        # ロリポップと相性の良い転送ツールをインストールします
         run: sudo apt-get update && sudo apt-get install -y lftp
 
       - name: FTP Upload via lftp
         run: |
-          lftp -e "set ftp:ssl-allow no; mirror -R --exclude .github/ --exclude .git/ . /fukunaga/wp-content/themes/mytheme/; quit" -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ftp.lolipop.jp
+          # ⚠️ ポイント1：パスの冒頭から / を消し、相対パスに変更
+          # ⚠️ ポイント2：セミコロンの前にスペースを入れ、パスと混同されないように修正
+          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R . fukunaga/wp-content/themes/mytheme/ ; quit" ftp.lolipop.jp
