@@ -13,14 +13,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: FTP Deploy
-        # ⚠️ ロリポップと相性が良い、余計な管理ファイルを作らないプログラム
+        # ⚠️ ロリポップと相性が良い「余計な管理ファイル」を作らないプログラム
         uses: AykutSarac/ftp-deploy@v1.0.2
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # ⚠️ 転送元（GitHub側）
           local-dir: ./
-          # ⚠️ 転送先（サーバー側）
-          # スクリーンショットで確認した正確なパスを指定します
+          # ⚠️ 画像（image_b10519.png / screencapture...root...）から導き出した正解のパス
           server-dir: fukunaga/wp-content/themes/mytheme/
