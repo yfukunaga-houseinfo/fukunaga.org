@@ -12,14 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: FTP Deploy
-        # ⚠️ ロリポップで確実に動作する、余計なメモファイルを作らないプログラム
-        uses: actions-hub/ftp-upload@master
-        with:
-          host: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          # ⚠️ ファイルマネージャー（image_b11ee9.png）で確認したパス
-          remote_dir: /fukunaga/wp-content/themes/mytheme/
-          # GitHubにあるファイルをそのまま送る
-          local_dir: ./
+      - name: Install lftp
+        # ロリポップと相性の良い転送ツールをインストールします
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: FTP Upload via lftp
+        run: |
+          lftp -e "set ftp:ssl-allow no; mirror -R --exclude .github/ --exclude .git/ . /fukunaga/wp-content/themes/mytheme/; quit" -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ftp.lolipop.jp
