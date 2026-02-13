@@ -1,9 +1,9 @@
-name: Deploy WordPress Theme to Lolipop
+name: Deploy to Lolipop WordPress
 
 on:
   push:
     branches:
-      - main
+      - main  # mainブランチに更新（保存）があったら実行
 
 jobs:
   deploy:
@@ -13,12 +13,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: FTP Deploy
-        # ⚠️ ロリポップと相性が良い「余計な管理ファイル」を作らないプログラム
-        uses: AykutSarac/ftp-deploy@v1.0.2
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
-          # ⚠️ 画像（image_b10519.png / screencapture...root...）から導き出した正解のパス
-          server-dir: fukunaga/wp-content/themes/mytheme/
+          # ⚠️ 成功例にならい、/ から始まる絶対パスで指定します
+          server-dir: /fukunaga/wp-content/themes/mytheme/
+          
+          # ⚠️ ロリポップで「550 許可されていない操作」を防ぐための重要な1行
+          # 転送メモ（.json）の名前にドットをつけないことで、サーバーの拒絶を回避します
+          state-name: ftp-deploy-sync-state.json
