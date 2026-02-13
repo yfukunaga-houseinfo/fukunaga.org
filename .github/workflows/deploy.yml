@@ -18,9 +18,9 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # ⚠️ 成功例にならい、/ から始まる絶対パスで指定します
+          # ⚠️ 成功例（/houseinfo/...）にならい、/ から始まる絶対パスで指定します
           server-dir: /fukunaga/wp-content/themes/mytheme/
           
-          # ⚠️ ロリポップで「550 許可されていない操作」を防ぐための重要な1行
-          # 転送メモ（.json）の名前にドットをつけないことで、サーバーの拒絶を回避します
+          # ⚠️ ロリポップでの「550エラー」を確実に防ぐための追加設定
+          # 同期用の管理ファイル名にドットを入れないことで、サーバーの制限を回避します
           state-name: ftp-deploy-sync-state.json
