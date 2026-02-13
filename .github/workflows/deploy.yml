@@ -19,7 +19,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           # ⚠️ 成功例（/houseinfo/...）にならい、/ から始まる絶対パスで指定します
-          server-dir: /wp-content/themes/mytheme/
+          server-dir: /fukunaga/wp-content/themes/mytheme/
           
           # ⚠️ ロリポップでの「550エラー」を確実に防ぐための追加設定
           # 同期用の管理ファイル名にドットを入れないことで、サーバーの制限を回避します
