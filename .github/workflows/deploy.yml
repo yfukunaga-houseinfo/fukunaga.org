@@ -13,15 +13,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: FTP Deploy
-        # ⚠️ ロリポップと非常に相性が良い、シンプルなアップロード専用プログラム
-        uses: SebRollen/ftp-deploy@v0.3.1
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.FTP_SERVER }}
-          user: ${{ secrets.FTP_USERNAME }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # ⚠️ 画像（image_b11ee9.png）で確認済みのパス
-          remoteDir: /fukunaga/wp-content/themes/mytheme/
-          # GitHubのファイルをそのまま送る
-          localDir: ./
-          # ⚠️ deploy.ymlなどは送らないように除外（エラー防止）
-          deleteRemoteFiles: false
+          # フォルダパスはこれで確定です
+          server-dir: /fukunaga/wp-content/themes/mytheme/
+          
+          # ⚠️ 重要：ロリポップでエラーになる「ドット付きjson」を作らせない設定
+          # ファイル名を普通のテキストファイルに変えることで、550エラーを回避します
+          state-name: sync-state.txt
