@@ -12,10 +12,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
-
-      - name: FTP Upload via lftp
-        run: |
-          # ⚠️ 修正ポイント：スペースを完全に排除し、cdで確実にフォルダへ入ります
-          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -e "set ftp:ssl-allow no; cd fukunaga/wp-content/themes/mytheme/; mirror -R . .; quit" ftp.lolipop.jp
+      - name: FTP Deploy
+        # ⚠️ ロリポップと相性が良い、余計な管理ファイルを作らないプログラム
+        uses: AykutSarac/ftp-deploy@v1.0.2
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # ⚠️ 転送元（GitHub側）
+          local-dir: ./
+          # ⚠️ 転送先（サーバー側）
+          # スクリーンショットで確認した正確なパスを指定します
+          server-dir: fukunaga/wp-content/themes/mytheme/
