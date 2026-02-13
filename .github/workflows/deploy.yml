@@ -18,7 +18,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # 成功している他リポジトリと同じ絶対パス形式
+          # 成功例に基づいた絶対パス
           server-dir: /fukunaga/wp-content/themes/mytheme/
-          # 550エラー防止用の管理ファイル設定
+          
+          # ロリポップの 550 エラーを回避する設定
           state-name: ftp-deploy-sync-state.json
