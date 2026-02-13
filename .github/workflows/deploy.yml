@@ -18,5 +18,8 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # ⚠️ /fukunaga/wp-content/themes/ の後に自分のテーマフォルダ名を指定してください
+          # フォルダは作成済みであることを確認済み
           server-dir: /fukunaga/wp-content/themes/mytheme/
+          
+          # ⚠️ 解決策：ドットを消して、ロリポップに拒否されないファイル名に変更します
+          state-name: ftp-deploy-sync-state.json
