@@ -3,7 +3,7 @@ name: Deploy to Lolipop WordPress
 on:
   push:
     branches:
-      - main  # mainブランチに更新（保存）があったら実行
+      - main
 
 jobs:
   deploy:
@@ -18,9 +18,9 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          # ⚠️ 成功例（/houseinfo/...）にならい、/ から始まる絶対パスで指定します
+          # ⚠️ 成功例に合わせ、/ から始まる絶対パスを指定
           server-dir: /fukunaga/wp-content/themes/mytheme/
           
-          # ⚠️ ロリポップでの「550エラー」を確実に防ぐための追加設定
-          # 同期用の管理ファイル名にドットを入れないことで、サーバーの制限を回避します
+          # ⚠️ ロリポップの 550 エラーを回避する最重要設定
+          # 管理ファイルからドットを消して、ただの json ファイルとして扱わせます
           state-name: ftp-deploy-sync-state.json
