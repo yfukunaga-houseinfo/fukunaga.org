@@ -17,6 +17,5 @@ jobs:
 
       - name: FTP Upload via lftp
         run: |
-          # ⚠️ ポイント1：パスの冒頭から / を消し、相対パスに変更
-          # ⚠️ ポイント2：セミコロンの前にスペースを入れ、パスと混同されないように修正
-          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -e "set ftp:ssl-allow no; mirror -R . fukunaga/wp-content/themes/mytheme/ ; quit" ftp.lolipop.jp
+          # ⚠️ 修正ポイント：スペースを完全に排除し、cdで確実にフォルダへ入ります
+          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -e "set ftp:ssl-allow no; cd fukunaga/wp-content/themes/mytheme/; mirror -R . .; quit" ftp.lolipop.jp
