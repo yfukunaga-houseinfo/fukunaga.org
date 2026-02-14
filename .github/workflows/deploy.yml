@@ -18,13 +18,14 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASS }} #
-          port: 2222 # ロリポップ専用ポート
+          port: 2222 #
           
-          # ⚠️ 転送元（GitHub）
-          source: "./*"
-          # ⚠️ 転送先（サーバー上の絶対パス）
-          target: "/home/users/2/sub.jp-houseinfo/web/fukunaga/wp-content/themes/mytheme/"
+          # ⚠️ 修正ポイント1：GitHubの全ファイルを対象にします
+          source: "."
+          # ⚠️ 修正ポイント2：ログイン直後のフォルダからの「相対パス」に変更
+          # ロリポップではログイン直後に web フォルダが見えるため、ここから始めます
+          target: "web/fukunaga/wp-content/themes/mytheme"
           
-          # 不要なファイルを除外
-          rm: false # 上書きモード（既存ファイルを消さない）
+          # ⚠️ 修正ポイント3：既存のファイルを上書きする設定を追加
+          overwrite: true
           strip_components: 0
