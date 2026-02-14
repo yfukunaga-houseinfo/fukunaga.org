@@ -1,4 +1,4 @@
-name: Deploy to Lolipop WordPress
+name: Deploy via SSH (rsync) to Lolipop
 
 on:
   push:
@@ -12,11 +12,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Deploy to Lolipop
+        uses: easingthemes/ssh-deploy@main
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          # ⚠️ 成功例に合わせ、/ から始まる絶対パスを指定します
-          server-dir: /fukunaga/wp-content/themes/mytheme/
+          # SSH接続情報
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PASS }} # パスワードを鍵として代用する設定です
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: 2222 # ロリポップ専用ポート
+          
+          # ⚠️ 転送元（GitHub）
+          SOURCE: "./"
+          # ⚠️ 転送先（サーバー上の絶対パス）
+          # SSHでは /home/users/... から始まるフルパスが必要です
+          TARGET: "/home/users/2/sub.jp-houseinfo/web/fukunaga/wp-content/themes/mytheme/"
+          
+          # 不要なファイルを送らない設定
+          EXCLUDE: "/.git/, /.github/"
