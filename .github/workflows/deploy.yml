@@ -12,20 +12,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # ⚠️ 修正ポイント：サーバーに不要な管理ファイルを削除してから送ります
+      - name: Remove unnecessary files
+        run: rm -rf .git .github
+
       - name: Copy files via SSH password
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASS }} #
-          port: 2222 #
+          password: ${{ secrets.SSH_PASS }}
+          port: 2222
           
-          # ⚠️ 修正ポイント1：GitHubの全ファイルを対象にします
           source: "."
-          # ⚠️ 修正ポイント2：ログイン直後のフォルダからの「相対パス」に変更
-          # ロリポップではログイン直後に web フォルダが見えるため、ここから始めます
           target: "web/fukunaga/wp-content/themes/mytheme"
           
-          # ⚠️ 修正ポイント3：既存のファイルを上書きする設定を追加
           overwrite: true
           strip_components: 0
