@@ -1,4 +1,4 @@
-name: Deploy via SSH (rsync) to Lolipop
+name: Deploy via SSH (SFTP) to Lolipop
 
 on:
   push:
@@ -12,20 +12,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Deploy to Lolipop
-        uses: easingthemes/ssh-deploy@main
+      - name: Copy files via SSH password
+        uses: appleboy/scp-action@v0.1.7
         with:
-          # SSH接続情報
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PASS }} # パスワードを鍵として代用する設定です
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: 2222 # ロリポップ専用ポート
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }} #
+          port: 2222 # ロリポップ専用ポート
           
           # ⚠️ 転送元（GitHub）
-          SOURCE: "./"
+          source: "./*"
           # ⚠️ 転送先（サーバー上の絶対パス）
-          # SSHでは /home/users/... から始まるフルパスが必要です
-          TARGET: "/home/users/2/sub.jp-houseinfo/web/fukunaga/wp-content/themes/mytheme/"
+          target: "/home/users/2/sub.jp-houseinfo/web/fukunaga/wp-content/themes/mytheme/"
           
-          # 不要なファイルを送らない設定
-          EXCLUDE: "/.git/, /.github/"
+          # 不要なファイルを除外
+          rm: false # 上書きモード（既存ファイルを消さない）
+          strip_components: 0
